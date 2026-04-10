@@ -5,7 +5,7 @@ export default function HeroSection() {
       style={{ height: "100vh", minHeight: "600px" }}
       aria-label="Hero"
     >
-      {/* Background video */}
+      {/* Background video
       <video
         className="absolute inset-0 w-full h-full object-cover"
         src=""
@@ -14,7 +14,7 @@ export default function HeroSection() {
         loop
         playsInline
         aria-hidden="true"
-      />
+      /> */}
 
       {/* Dark overlay */}
       <div
