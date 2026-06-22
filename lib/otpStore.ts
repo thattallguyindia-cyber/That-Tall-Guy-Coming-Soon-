@@ -1,23 +1,15 @@
-const store = new Map<string, { otp: string; expires: number }>()
+import { Redis } from "@upstash/redis"
 
-export function saveOtp(email: string, otp: string) {
-  store.set(email, {
-    otp,
-    expires: Date.now() + 10 * 60 * 1000, // 10 min
-  })
+const redis = Redis.fromEnv()
+
+export async function saveOtp(email: string, otp: string) {
+  await redis.set(`otp:${email}`, otp, { ex: 600 })
 }
 
-export function verifyOtp(email: string, code: string): boolean {
-  const entry = store.get(email)
-  if (!entry) return false
-
-  if (Date.now() > entry.expires) {
-    store.delete(email)
-    return false
-  }
-
-  if (entry.otp !== code) return false
-
-  store.delete(email)
+export async function verifyOtp(email: string, code: string): Promise<boolean> {
+  const stored = await redis.get<string>(`otp:${email}`)
+  if (!stored) return false
+  if (stored !== code) return false
+  await redis.del(`otp:${email}`)
   return true
 }

@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   if (!email) return NextResponse.json({ error: "Email required" }, { status: 400 })
 
   const otp = Math.floor(100000 + Math.random() * 900000).toString() // 6-digit code
-  saveOtp(email, otp)
+  await saveOtp(email, otp)
 
   await resend.emails.send({
     from: "THAT TALL GUY <onboarding@resend.dev>", // change after domain setup
