@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
   await saveOtp(email, otp)
 
   await resend.emails.send({
-    from: "THAT TALL GUY <onboarding@resend.dev>", // change after domain setup
+    from: "THAT TALL GUY <noreply@thattallguyindia.com>", // change after domain setup
     to: email,
     subject: "Your verification code",
     html: `
