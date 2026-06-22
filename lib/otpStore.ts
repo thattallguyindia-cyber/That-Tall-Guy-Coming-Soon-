@@ -7,9 +7,15 @@ export async function saveOtp(email: string, otp: string) {
 }
 
 export async function verifyOtp(email: string, code: string): Promise<boolean> {
-  const stored = await redis.get<string>(`otp:${email}`)
+  const stored = await redis.get(`otp:${email}`)
   if (!stored) return false
-  if (stored !== code) return false
+  
+  // Strip any extra quotes Upstash might add
+  const storedStr = String(stored).replace(/"/g, "").trim()
+  const inputStr = String(code).replace(/"/g, "").trim()
+  
+  if (storedStr !== inputStr) return false
+  
   await redis.del(`otp:${email}`)
   return true
 }
