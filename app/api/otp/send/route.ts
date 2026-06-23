@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   const otp = Math.floor(100000 + Math.random() * 900000).toString()
   await saveOtp(email, otp)
 
-  await resend.emails.send({
+  const result = await resend.emails.send({
     from: "THAT TALL GUY <noreply@thattallguyindia.com>",
     to: email,
     subject: "Your verification code",
@@ -23,6 +23,11 @@ export async function POST(req: NextRequest) {
       </div>
     `,
   })
+
+  if (result.error) {
+    console.error("Resend error:", result.error)
+    return NextResponse.json({ error: "Failed to send email" }, { status: 500 })
+  }
 
   return NextResponse.json({ ok: true })
 }
