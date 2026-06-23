@@ -247,13 +247,11 @@ function OtpBlock({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       })
-      if (res.status === 409) throw new Error("Already registered")
       if (!res.ok) throw new Error("Failed to send OTP")
       setSent(true)
       startCooldown(30)
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : ""
-      setError(msg === "Already registered" ? "This email is already registered." : "Could not send OTP. Please try again.")
+    } catch {
+      setError("Could not send OTP. Please try again.")
     } finally {
       setSending(false)
     }
