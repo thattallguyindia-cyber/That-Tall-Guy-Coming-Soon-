@@ -366,7 +366,18 @@ function OtpBlock({
           )}
         </button>
       )}
-
+ {/* Error before send */}
+      {!sent && error && (
+        <p style={{
+          fontFamily: "var(--font-dm-sans)",
+          fontSize: "0.65rem",
+          letterSpacing: "0.12em",
+          color: "#f87171",
+          textTransform: "uppercase",
+        }}>
+          {error}
+        </p>
+      )}
       {/* OTP digit inputs */}
       {sent && (
         <>
